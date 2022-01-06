@@ -1,1 +1,1 @@
-export 'home/notes_screen.dart';
+export 'notes/notes_screen.dart';

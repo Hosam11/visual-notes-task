@@ -1,8 +1,11 @@
 import 'package:fimber/fimber.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:visual_notes/screens/base_controller.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:visual_notes/constants/z_constants.dart';
+import 'package:visual_notes/data/floor/db/services/note_service.dart';
+import 'package:visual_notes/data/floor/entities/note_entity.dart';
+import 'package:visual_notes/screens/base_controller.dart';
 
 // ignore: constant_identifier_names
 enum Status { Open, Closed }
@@ -12,19 +15,27 @@ class NoteDataController extends BaseController {
   final idController = TextEditingController();
   final titleController = TextEditingController();
   final descController = TextEditingController();
-  // properties
+
+  // ---------------- Properties ----------------
   final _imagePath = ''.obs;
   final _selectedStatus = ''.obs;
   final _imageError = false.obs;
+
   // getters
   String get imagePath => _imagePath.value;
+
   String? get selectedStatus =>
       _selectedStatus.value == '' ? null : _selectedStatus.value;
+
   bool get imageError => _imageError.value;
+
   List<String> get statuses =>
       Status.values.map((s) => s.name).toList(growable: false);
 
-  // Methods
+  // ---------------- Methods ----------------
+
+  /// when click on image choose image from camera and save it in [_imagePath]
+  /// or save old value if return without choose an image
   Future<void> onImagePressed() async {
     XFile? image;
     final imgPicker = ImagePicker();
@@ -32,27 +43,70 @@ class NoteDataController extends BaseController {
     _imagePath.value = image?.path ?? _imagePath.value;
   }
 
+  /// when choose value from dropdown list assign it to [_selectedStatus] to
+  /// store it later in database
   void onDropDownChanged(String? status) {
     if (status != null) {
       _selectedStatus.value = status;
     }
   }
 
-  void onSavedPressed() {
+  /// when saved form data pressed check first if all form data valid so
+  /// [moveImage] to new directory and call [saveToDatabase] to save data
+  /// in database
+  Future<void> onSavedPressed() async {
     final isValid = formKey.currentState?.validate();
     _imageError.value = _imagePath.value.isEmpty ? true : false;
+    // if every required field in provided
     if (isValid != null && isValid && !_imageError.value) {
-      // all good proceed
-      final date = DateTime.now();
-      Fimber.i('idController= ${idController.text}'
-          'titleController= ${titleController.text}'
-          'descController= ${descController.text}'
-          '_imagePath= $imagePath'
-          '_selectedStatus= $selectedStatus'
-          'date= $date');
+      final newImage = await moveImage(imagePath);
+
+      /// save new image path to  [_imagePath] because if there is error happened
+      /// he can access the new path of image
+      _imagePath.value = newImage.path;
+      Fimber.i('newImagePath= ${newImage.path}');
+      final note = NoteEntity(
+        id: int.parse(idController.text),
+        title: titleController.text,
+        imagePath: imagePath,
+        desc: descController.text,
+        date: DateTime.now(),
+        status: selectedStatus!,
+      );
+
+      saveToDatabase(note);
     }
   }
 
+  /// save [note] to database then show dialog whether operation succeed or failed
+  Future<void> saveToDatabase(NoteEntity note) async {
+    try {
+      startLoading();
+      final idInserted = await Get.find<NoteService>().insertNote(note);
+      stopLoading();
+      if (idInserted == note.id) {
+        resetFormData();
+        await showInfoDialog(noteAddSuccessfully);
+      }
+    } catch (e) {
+      stopLoading();
+      showInfoDialog(errorNoteAdd);
+      Fimber.e('error= ${e.runtimeType}');
+    }
+  }
+
+  /// reset form data so if he want to add new note
+  void resetFormData() {
+    idController.clear();
+    titleController.clear();
+    descController.clear();
+    _imagePath.value = '';
+    _selectedStatus.value = '';
+    _imageError.value = false;
+  }
+
+  /// dispose all controllers when current controller [NoteDataController]
+  /// disposed
   @override
   void dispose() {
     super.dispose();

@@ -1,6 +1,7 @@
 import 'package:floor/floor.dart';
 import 'package:visual_notes/data/floor/entities/note_entity.dart';
 
+/// responsible for declare crud operation
 @dao
 abstract class NoteDao {
   @insert

@@ -1,5 +1,6 @@
 import 'package:floor/floor.dart';
 
+/// represent table in database
 @entity
 class NoteEntity {
   NoteEntity({

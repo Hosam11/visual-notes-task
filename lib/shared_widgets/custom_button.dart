@@ -6,25 +6,24 @@ class CustomButton extends StatelessWidget {
     Key? key,
     this.onPressed,
     required this.title,
+    this.hasSize = true,
   }) : super(key: key);
 
   final VoidCallback? onPressed;
   final String title;
-
+  final bool hasSize;
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        minimumSize: Size(MediaQuery.of(context).size.width, 40),
+        minimumSize:
+            hasSize ? Size(MediaQuery.of(context).size.width, 40) : null,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(defaultRadius),
         ),
       ),
-      child: Text(
-        title,
-        // style: const TextStyle(color: ),
-      ),
+      child: Text(title),
     );
   }
 }

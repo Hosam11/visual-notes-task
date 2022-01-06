@@ -8,6 +8,8 @@ import 'package:visual_notes/data/floor/entities/note_entity.dart';
 
 part 'floor_db.g.dart'; // the generated code will be there
 
+/// database class that responsible for declare database configurations, entities
+/// dao, version and migrations ..etc
 @TypeConverters([DateTimeConverter])
 @Database(version: 1, entities: [NoteEntity])
 abstract class FloorDB extends FloorDatabase {
