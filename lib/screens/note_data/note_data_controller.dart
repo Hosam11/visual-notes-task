@@ -4,7 +4,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:visual_notes/screens/base_controller.dart';
 import 'package:get/get.dart';
 
-enum Status { open, closed }
+// ignore: constant_identifier_names
+enum Status { Open, Closed }
 
 class NoteDataController extends BaseController {
   final formKey = GlobalKey<FormState>();
@@ -25,7 +26,6 @@ class NoteDataController extends BaseController {
 
   // Methods
   Future<void> onImagePressed() async {
-    Fimber.i('-');
     XFile? image;
     final imgPicker = ImagePicker();
     image = await imgPicker.pickImage(source: ImageSource.camera);
@@ -33,7 +33,6 @@ class NoteDataController extends BaseController {
   }
 
   void onDropDownChanged(String? status) {
-    Fimber.i('-');
     if (status != null) {
       _selectedStatus.value = status;
     }
