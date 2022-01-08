@@ -69,7 +69,7 @@ class BaseController extends GetxController {
   Future showInfoDialog(String msg) => showDialog(
         context: Get.context!,
         builder: (BuildContext context) => AlertDialog(
-          shape: dialogShape,
+          shape: defaultShape,
           content: Text(msg.tr, textAlign: TextAlign.center),
           actions: [
             Center(

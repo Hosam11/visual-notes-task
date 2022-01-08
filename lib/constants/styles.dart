@@ -18,5 +18,5 @@ final kTextFieldDecoration = InputDecoration(
   ),
 );
 
-final dialogShape =
+final defaultShape =
     RoundedRectangleBorder(borderRadius: BorderRadius.circular(defaultRadius));

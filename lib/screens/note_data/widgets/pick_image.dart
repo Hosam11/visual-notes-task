@@ -33,7 +33,9 @@ class PickImage extends StatelessWidget {
         ),
         child: image == null || image!.isEmpty
             ? const Icon(Icons.add_a_photo, size: 70, color: Colors.white)
-            : Image.file(File(image!), fit: BoxFit.cover),
+            : ClipRRect(
+                borderRadius: BorderRadius.circular(defaultRadius),
+                child: Image.file(File(image!), fit: BoxFit.cover)),
       ),
     );
   }

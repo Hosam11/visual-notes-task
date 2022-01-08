@@ -120,6 +120,18 @@ class _$NoteDao extends NoteDao {
                   'imagePath': item.imagePath,
                   'date': _dateTimeConverter.encode(item.date),
                   'status': item.status
+                }),
+        _noteEntityDeletionAdapter = DeletionAdapter(
+            database,
+            'NoteEntity',
+            ['id'],
+            (NoteEntity item) => <String, Object?>{
+                  'id': item.id,
+                  'title': item.title,
+                  'desc': item.desc,
+                  'imagePath': item.imagePath,
+                  'date': _dateTimeConverter.encode(item.date),
+                  'status': item.status
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -132,11 +144,7 @@ class _$NoteDao extends NoteDao {
 
   final UpdateAdapter<NoteEntity> _noteEntityUpdateAdapter;
 
-  @override
-  Future<void> deleteNote(int id) async {
-    await _queryAdapter
-        .queryNoReturn('DELETE FROM NoteEntity WHERE id= ?1', arguments: [id]);
-  }
+  final DeletionAdapter<NoteEntity> _noteEntityDeletionAdapter;
 
   @override
   Future<List<NoteEntity>> getAllNotes() async {
@@ -165,6 +173,11 @@ class _$NoteDao extends NoteDao {
   Future<int> updateNote(NoteEntity note) {
     return _noteEntityUpdateAdapter.updateAndReturnChangedRows(
         note, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> deleteNote(NoteEntity note) async {
+    await _noteEntityDeletionAdapter.delete(note);
   }
 }
 

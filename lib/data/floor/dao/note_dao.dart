@@ -10,8 +10,8 @@ abstract class NoteDao {
   @update
   Future<int> updateNote(NoteEntity note);
 
-  @Query('DELETE FROM NoteEntity WHERE id= :id')
-  Future<void> deleteNote(int id);
+  @delete
+  Future<void> deleteNote(NoteEntity note);
 
   @Query('SELECT * FROM NoteEntity')
   Future<List<NoteEntity>> getAllNotes();

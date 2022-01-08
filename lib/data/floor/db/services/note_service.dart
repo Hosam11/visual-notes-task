@@ -21,7 +21,8 @@ class NoteService extends GetxService {
   Future<int> updateNote(NoteEntity note) async =>
       await _noteDao.updateNote(note);
 
-  Future<void> deleteNote(int id) async => await _noteDao.deleteNote(id);
+  Future<void> deleteNote(NoteEntity note) async =>
+      await _noteDao.deleteNote(note);
 
   // NOT used for test only to clear table
   Future<void> deleteAll() async => await _noteDao.deleteAllNotes();

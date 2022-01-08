@@ -21,7 +21,7 @@ class NoteDataController extends BaseController {
   final _selectedStatus = ''.obs;
   final _imageError = false.obs;
 
-  // getters
+  // ---------------- Getters ----------------
   String get imagePath => _imagePath.value;
 
   String? get selectedStatus =>
@@ -69,7 +69,7 @@ class NoteDataController extends BaseController {
         id: int.parse(idController.text),
         title: titleController.text,
         imagePath: imagePath,
-        desc: descController.text,
+        desc: descController.text.isEmpty ? null : descController.text,
         date: DateTime.now(),
         status: selectedStatus!,
       );
