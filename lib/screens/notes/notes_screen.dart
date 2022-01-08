@@ -44,12 +44,14 @@ class _NotesScreenState extends State<NotesScreen> {
           children: [
             Obx(
               () => Expanded(
-                child: ListView.builder(
-                  itemBuilder: (_, i) => NoteCard(
-                    noteEntity: notesController.notes[i],
-                  ),
-                  itemCount: notesController.notes.length,
-                ),
+                child: notesController.notes.isEmpty
+                    ? EmptyWidget(text: emptyNotes)
+                    : ListView.builder(
+                        itemBuilder: (_, i) => NoteCard(
+                          noteEntity: notesController.notes[i],
+                        ),
+                        itemCount: notesController.notes.length,
+                      ),
               ),
             ),
           ],

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:visual_notes/constants/z_constants.dart';
@@ -53,17 +54,10 @@ class BaseController extends GetxController {
     }
   }
 
+  String defaultDateFormat(DateTime date) =>
+      DateFormat('MM/dd/yyyy hh:mm aaa').format(date);
+
   // ---------------- Dialogs ----------------
-
-  /// showing loading progress indicator when an operation happened that takes
-  /// time
-  Future startLoading() async => await Get.dialog(
-        const Center(child: CircularProgressIndicator(color: kPrimaryColor)),
-        barrierDismissible: false,
-      );
-
-  /// stop loading progress indicator when operation ends
-  void stopLoading() => Get.back();
 
   /// show dialog with given [msg]
   Future showInfoDialog(String msg) => showDialog(
@@ -82,4 +76,14 @@ class BaseController extends GetxController {
           ],
         ),
       );
+
+  /// showing loading progress indicator when an operation happened that takes
+  /// time
+  Future startLoading() async => await Get.dialog(
+        const Center(child: CircularProgressIndicator(color: kPrimaryColor)),
+        barrierDismissible: false,
+      );
+
+  /// stop loading progress indicator when operation ends
+  void stopLoading() => Get.back();
 }

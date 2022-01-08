@@ -20,7 +20,7 @@ class NoteDataScreen extends StatelessWidget {
         child: Padding(
           padding: screenPadding,
           child: GetX<NoteDataController>(
-            init: NoteDataController(Get.arguments as NoteEntity),
+            init: NoteDataController(Get.arguments as NoteEntity?),
             builder: (noteDataController) => Form(
               key: noteDataController.formKey,
               child: Column(
@@ -52,22 +52,26 @@ class NoteDataScreen extends StatelessWidget {
                   // ---------------- Id ----------------
                   LabelText(label: id, isRequired: true),
                   CustomTextField(
-                      keyboardType: TextInputType.number,
-                      validator: noteDataController.validateEmptyField,
-                      controller: noteDataController.idController,
-                      isEnabled: !noteDataController.isEdit),
+                    keyboardType: TextInputType.number,
+                    validator: noteDataController.validateEmptyField,
+                    controller: noteDataController.idController,
+                    isEnabled: !noteDataController.isEdit,
+                    textInputAction: TextInputAction.next,
+                  ),
                   const SizedBox(height: mediumPadding),
                   // ---------------- Title ----------------
                   LabelText(label: title, isRequired: true),
                   CustomTextField(
                     validator: noteDataController.validateEmptyField,
                     controller: noteDataController.titleController,
+                    textInputAction: TextInputAction.next,
                   ),
                   const SizedBox(height: mediumPadding),
                   // ---------------- Description ----------------
                   LabelText(label: description),
                   CustomTextField(
                     controller: noteDataController.descController,
+                    textInputAction: TextInputAction.next,
                   ),
                   const SizedBox(height: mediumPadding),
                   // ---------------- Status ----------------

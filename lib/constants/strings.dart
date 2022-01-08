@@ -26,3 +26,5 @@ const errorNoteAdd =
 const errorMsg = 'Something wrong happened, Please try again later';
 // message
 const noDescription = 'No description given';
+// others
+const emptyNotes = 'There are no notes';

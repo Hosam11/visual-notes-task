@@ -48,6 +48,7 @@ class NoteCard extends StatelessWidget {
                   // ---------------- Title & id ----------------
                   Row(
                     children: [
+                      // ---------------- Title ----------------
                       Expanded(
                         flex: 2,
                         child: Text(
@@ -55,6 +56,7 @@ class NoteCard extends StatelessWidget {
                           style: Theme.of(context).textTheme.headline6,
                         ),
                       ),
+                      // ---------------- Id ----------------
                       Expanded(
                         child: Text(
                           noteEntity.id.toString(),
@@ -70,17 +72,19 @@ class NoteCard extends StatelessWidget {
                     style: Theme.of(context).textTheme.caption,
                   ),
                   const SizedBox(height: smallPadding),
-                  // ---------------- Date ----------------
+                  // ---------------- Date & status ----------------
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      // ---------------- Date ----------------
                       Expanded(
                         flex: 2,
                         child: Text(
-                          '${noteEntity.date}',
+                          notesController.defaultDateFormat(noteEntity.date),
                           style: Theme.of(context).textTheme.caption,
                         ),
                       ),
+                      // ---------------- status ----------------
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,6 +114,7 @@ class NoteCard extends StatelessWidget {
                   // ---------------- Delete & edit buttons ----------------
                   Row(
                     children: [
+                      // ---------------- Edit button ----------------
                       Expanded(
                         child: CustomButton(
                           title: edit,
@@ -119,6 +124,7 @@ class NoteCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: largePadding),
+                      // ---------------- Delete button ----------------
                       Expanded(
                         child: CustomButton(
                           title: delete,
