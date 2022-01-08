@@ -27,5 +27,8 @@ class NotesController extends BaseController {
     _notes.remove(note);
   }
 
-  onUpdateNotePressed(NoteEntity noteEntity) {}
+  onUpdateNotePressed(NoteEntity noteEntity) async {
+    await Get.toNamed(noteDataScreen, arguments: noteEntity);
+    getNotes();
+  }
 }

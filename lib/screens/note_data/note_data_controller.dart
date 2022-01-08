@@ -11,6 +11,21 @@ import 'package:visual_notes/screens/base_controller.dart';
 enum Status { Open, Closed }
 
 class NoteDataController extends BaseController {
+  final NoteEntity? _noteEntity;
+
+  NoteDataController(NoteEntity? noteEntity) : _noteEntity = noteEntity {
+    Fimber.i('noteEntity= $noteEntity');
+    if (_noteEntity != null) {
+      idController.text = _noteEntity!.id.toString();
+      titleController.text = _noteEntity!.title;
+      if (_noteEntity?.desc != null) {
+        descController.text = _noteEntity!.desc!;
+      }
+      _imagePath.value = _noteEntity!.imagePath;
+      _selectedStatus.value = _noteEntity!.status;
+    }
+  }
+
   final formKey = GlobalKey<FormState>();
   final idController = TextEditingController();
   final titleController = TextEditingController();
@@ -31,6 +46,8 @@ class NoteDataController extends BaseController {
 
   List<String> get statuses =>
       Status.values.map((s) => s.name).toList(growable: false);
+
+  bool get isEdit => _noteEntity != null ? true : false;
 
   // ---------------- Methods ----------------
 
@@ -70,11 +87,25 @@ class NoteDataController extends BaseController {
         title: titleController.text,
         imagePath: imagePath,
         desc: descController.text.isEmpty ? null : descController.text,
-        date: DateTime.now(),
+        // because it date of taken note
+        date: isEdit ? _noteEntity!.date : DateTime.now(),
         status: selectedStatus!,
       );
+      isEdit ? updateNote(note) : saveToDatabase(note);
+    }
+  }
 
-      saveToDatabase(note);
+  Future<void> updateNote(NoteEntity note) async {
+    try {
+      startLoading();
+      final updatedNote = await Get.find<NoteService>().updateNote(note);
+      stopLoading();
+      Fimber.i('updatedNote= $updatedNote');
+      await showInfoDialog(noteUpdateSuccessfully);
+    } catch (e) {
+      stopLoading();
+      showInfoDialog(errorMsg);
+      Fimber.e('error= ${e.runtimeType}');
     }
   }
 

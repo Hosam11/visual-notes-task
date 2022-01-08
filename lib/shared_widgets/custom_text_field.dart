@@ -13,6 +13,7 @@ class CustomTextField extends StatelessWidget {
     this.onChange,
     this.textInputAction,
     this.controller,
+    this.isEnabled = true,
   }) : super(key: key);
 
   final TextEditingController? controller;
@@ -21,7 +22,7 @@ class CustomTextField extends StatelessWidget {
 
   final String? labelText;
   final String? hintText;
-
+  final bool isEnabled;
   final String? Function(String?)? validator;
   final void Function(String?)? onSaved;
   final void Function(String)? onFieldSubmitted;
@@ -41,6 +42,7 @@ class CustomTextField extends StatelessWidget {
         labelText: labelText,
         hintText: hintText,
       ),
+      enabled: isEnabled,
       onSaved: onSaved,
       validator: validator,
       onFieldSubmitted: onFieldSubmitted,

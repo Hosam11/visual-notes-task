@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:visual_notes/constants/z_constants.dart';
+import 'package:visual_notes/data/floor/entities/note_entity.dart';
 import 'package:visual_notes/screens/note_data/note_data_controller.dart';
 import 'package:visual_notes/screens/note_data/widgets/z_widgets.dart';
 import 'package:visual_notes/shared_widgets/z_shared_widgets.dart';
@@ -11,16 +12,15 @@ import 'package:visual_notes/shared_widgets/z_shared_widgets.dart';
 ///  responsible add or update note data
 class NoteDataScreen extends StatelessWidget {
   const NoteDataScreen({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: addNote),
+      appBar: CustomAppBar(title: noteData),
       body: SingleChildScrollView(
         child: Padding(
           padding: screenPadding,
           child: GetX<NoteDataController>(
-            init: NoteDataController(),
+            init: NoteDataController(Get.arguments as NoteEntity),
             builder: (noteDataController) => Form(
               key: noteDataController.formKey,
               child: Column(
@@ -52,10 +52,10 @@ class NoteDataScreen extends StatelessWidget {
                   // ---------------- Id ----------------
                   LabelText(label: id, isRequired: true),
                   CustomTextField(
-                    keyboardType: TextInputType.number,
-                    validator: noteDataController.validateEmptyField,
-                    controller: noteDataController.idController,
-                  ),
+                      keyboardType: TextInputType.number,
+                      validator: noteDataController.validateEmptyField,
+                      controller: noteDataController.idController,
+                      isEnabled: !noteDataController.isEdit),
                   const SizedBox(height: mediumPadding),
                   // ---------------- Title ----------------
                   LabelText(label: title, isRequired: true),
@@ -73,7 +73,7 @@ class NoteDataScreen extends StatelessWidget {
                   // ---------------- Status ----------------
                   LabelText(label: status),
                   CustomDropDown(
-                    // value: noteDataController.selectedStatus,
+                    value: noteDataController.selectedStatus,
                     listItem: noteDataController.statuses,
                     mOnChanged: noteDataController.onDropDownChanged,
                     mValidator: noteDataController.validateEmptyField,
@@ -81,7 +81,7 @@ class NoteDataScreen extends StatelessWidget {
                   const SizedBox(height: largePadding * 2),
                   // ---------------- Save button ----------------
                   CustomButton(
-                    title: save,
+                    title: noteDataController.isEdit ? update : save,
                     onPressed: noteDataController.onSavedPressed,
                   )
                 ],
