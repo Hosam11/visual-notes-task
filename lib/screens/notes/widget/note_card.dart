@@ -20,7 +20,7 @@ class NoteCard extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final isPortrait =
         MediaQuery.of(context).orientation == Orientation.portrait;
-    final imageSize = isPortrait ? size.width * .3 : size.height * .3;
+    final imageSize = isPortrait ? size.width * .4 : size.height * .3;
     return Padding(
       padding: const EdgeInsets.only(bottom: smallPadding),
       child: Card(

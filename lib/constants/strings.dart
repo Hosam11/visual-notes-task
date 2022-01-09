@@ -24,6 +24,8 @@ const noteUpdateSuccessfully = 'Note updated successfully';
 const errorNoteAdd =
     'There is error happened, Please try again with different id';
 const errorMsg = 'Something wrong happened, Please try again later';
+const cameraError =
+    'Something wrong happen, Check camera permission and try again';
 // message
 const noDescription = 'No description given';
 // others

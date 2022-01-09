@@ -1,5 +1,6 @@
 import 'package:fimber/fimber.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:visual_notes/constants/z_constants.dart';
@@ -56,8 +57,14 @@ class NoteDataController extends BaseController {
   Future<void> onImagePressed() async {
     XFile? image;
     final imgPicker = ImagePicker();
-    image = await imgPicker.pickImage(source: ImageSource.camera);
-    _imagePath.value = image?.path ?? _imagePath.value;
+    try {
+      image = await imgPicker.pickImage(source: ImageSource.camera);
+      _imagePath.value = image?.path ?? _imagePath.value;
+    } on PlatformException catch (e) {
+      Fimber.e('e =$e');
+      Fimber.e('e =${e.message}');
+      showInfoDialog((e.message) ?? cameraError);
+    }
   }
 
   /// when choose value from dropdown list assign it to [_selectedStatus] to
